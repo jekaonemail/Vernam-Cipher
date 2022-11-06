@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cipher that can hide your message.</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="message" id="message"></div>
+  
+  <h1>Welcome to my crypto Pen Dudes!</h1>
+  <p>In this pen you can hide your message by crypting and also decrypt hidden text to see what was written.</p>
+  <div style="margin: 0 0 10px 30px"><strong>RULES:</strong></div>
+  <ul>
+    <li>1. Your key's length neet's to be equal the message length.</li>
+    <li>2. For unbreakable message use random letters in your KEY.</li>
+    <li>2. No symbols! Only letters required.</li>
+  </ul>
+  
+  <div class="activity">
+    <button id="cryptMessageBtn">Crypt Message</button>
+    <button id="encryptMessageBtn">Decrypt Message</button>
+  </div>
+  
+  <div class="wrapper">
+    <label for="messageInput" id="inputMessage">Enter your message here</label>
+    <input type="text" id="messageInput" placeholder="Yes! Here..">
+    <button id="sendMessage">Push</button>
+  </div>
+  
+  <p id="result"><strong>Result:</strong><span id="resultLine"></span></p>
+</div>
+<script>
+  const module = 26;
+const alphabet = [
+    
+      'A', 'B', 'C', 'D', 'E',
+      'F', 'G', 'H', 'I', 'J',
+      'K', 'L', 'M', 'N', 'O',
+      'P', 'Q', 'R', 'S', 'T',
+      'U', 'V', 'W', 'X', 'Y', 'Z'
+ 
+];
+
+let visible = false;
+
+const cryptMessageBtn = document.getElementById('cryptMessageBtn');
+const encryptMessageBtn = document.getElementById('encryptMessageBtn');
+
+cryptMessageBtn.addEventListener('click', () => {
+  if(!visible){
+    const wrapper = document.querySelector('.wrapper')
+    wrapper.style.display = 'flex';
+    cryptMessageBtn.textContent = 'Ooops Cancel';
+    visible = true;
+    
+    const sendMessageBtn = document.getElementById('sendMessage');
+    sendMessageBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const userMessageInput = document.getElementById('messageInput');
+      const userMessage = userMessageInput.value.replace(/\s/g, '').toUpperCase();
+      // hide message form and create form for key
+      sendMessageBtn.remove();
+      userMessageInput.remove();
+      
+      // change label text;
+      const labelMessage = document.getElementById('inputMessage');
+      labelMessage.textContent = 'Enter your secret key. His length must be '+userMessage.length+' letters';
+      
+      // create new text input 
+      const keyInput = document.createElement('input');
+      keyInput.setAttribute('placeholder', 'Enter the secret key..');
+      keyInput.setAttribute('id', 'messageInput');
+      wrapper.appendChild(keyInput);
+      
+      //create new button for send;
+      const keySubmit = document.createElement('button');
+      keySubmit.setAttribute('id', 'sendMessage');
+      keySubmit.textContent = 'Push';
+      wrapper.appendChild(keySubmit);
+      
+      keySubmit.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const userKey = keyInput.value.replace(/\s/g, '').toUpperCase();
+        
+        if( userMessage.length != userKey.length) {
+          labelMessage.textContent = 'The length of key and message not equal! Message: '
+            +userMessage.length +' letters, Key: '+userKey.length;
+        }else{
+          const cryptedMessage = cryptMessage(module, alphabet, userMessage, userKey);
+          wrapper.remove();
+          cryptMessageBtn.remove();
+          encryptMessageBtn.remove();
+          
+          const result = document.getElementById('result');
+          result.style.display = 'block';
+          
+          const resultLine = document.getElementById('resultLine');
+          resultLine.textContent = ' '+cryptedMessage.join('');
+        }
+      })
+      
+    });
+    
+    
+  } else {
+    const wrapper = document.querySelector('.wrapper')
+    wrapper.style.display = 'none';
+    cryptMessageBtn.textContent = 'Crypt Message';
+    visible = false;
+  }
+});
+
+let visible2 = false;
+
+encryptMessageBtn.addEventListener('click', () => {
+  if(!visible2){
+    const wrapper = document.querySelector('.wrapper')
+    wrapper.style.display = 'flex';
+    encryptMessageBtn.textContent = 'Ooops Cancel';
+    visible2 = true;
+    
+    const sendMessageBtn = document.getElementById('sendMessage');
+    sendMessageBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const userMessageInput = document.getElementById('messageInput');
+      const userMessage = userMessageInput.value.replace(/\s/g, '').toUpperCase();
+      // hide message form and create form for key
+      sendMessageBtn.remove();
+      userMessageInput.remove();
+      
+      
+      // change label text;
+      const labelMessage = document.getElementById('inputMessage');
+      labelMessage.textContent = 'Enter your secret key. His length must be '+userMessage.length+' letters';
+      
+      // create new text input 
+      const keyInput = document.createElement('input');
+      keyInput.setAttribute('placeholder', 'Enter the secret key..');
+      keyInput.setAttribute('id', 'messageInput');
+      wrapper.appendChild(keyInput);
+      
+      //create new button for send;
+      const keySubmit = document.createElement('button');
+      keySubmit.setAttribute('id', 'sendMessage');
+      keySubmit.textContent = 'Push';
+      wrapper.appendChild(keySubmit);
+      
+      keySubmit.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const userKey = keyInput.value.replace(/\s/g, '').toUpperCase();
+        
+        if( userMessage.length != userKey.length) {
+          labelMessage.textContent = 'The length of key and message not equal! Message: '
+            +userMessage.length +' letters, Key: '+userKey.length;
+        }else{
+          const cryptedMessage = decryptMessage(module, alphabet, userMessage, userKey);
+          wrapper.remove();
+          encryptMessageBtn.remove();
+          cryptMessageBtn.remove();
+          
+          const result = document.getElementById('result');
+          result.style.display = 'block';
+          
+          const resultLine = document.getElementById('resultLine');
+          resultLine.textContent = ' '+cryptedMessage.join('');
+        }
+      })
+      
+    });
+    
+    
+  } else {
+    const wrapper = document.querySelector('.wrapper')
+    wrapper.style.display = 'none';
+    encryptMessageBtn.textContent = 'Crypt Message';
+    visible2 = false;
+  }
+});
+
+function cryptMessage(module, alphabet, message, key) {
+  // numbers of message letters;
+  let messageNumbers = [];
+  // numbers of key letters;
+  let keyNumbers = [];
+
+  // numbers of crypted message;
+  let crypted = [];
+
+  // crypted message;
+  let cryptedMessage = [];
+
+  // find message numbers of letters
+  for(
+        let iterator = 0; 
+        iterator < message.length; 
+        iterator++
+     )  {
+              for( let i = 0; i < alphabet.length; i++){
+                  if (message[iterator] == alphabet[i]) {
+                      messageNumbers.push(i);
+                  }
+              }
+
+              for( let o = 0; o < alphabet.length; o++){
+                  if (key[iterator] == alphabet[o]) {
+                    keyNumbers.push(o);
+                  }
+              }
+        }
+
+  // Generate crypto numbers from 
+  // message and key numbers by module
+  for(let i = 0; i < messageNumbers.length; i++) {
+
+    let number1 = messageNumbers[i];
+    let number2 = keyNumbers[i];
+
+
+    if ((number1 - number2) >= 0) {
+      crypted.push(number1 - number2);
+    } else {
+      crypted.push((number1 - number2) + module);
+    }
+
+  }
+
+  // generate crypto message;
+  for(let k = 0; k < crypted.length; k++) {
+      for(let m = 0; m < alphabet.length; m++) {
+          if( crypted[k] == m) {
+              cryptedMessage.push(alphabet[m]);
+          }
+      }
+  }
+  
+  return cryptedMessage;
+}
+function decryptMessage(module, alphabet, message, key) {
+  // numbers of message letters;
+  let messageNumbers = [];
+  // numbers of key letters;
+  let keyNumbers = [];
+
+  // numbers of crypted message;
+  let crypted = [];
+
+  // crypted message;
+  let cryptedMessage = [];
+
+  // find message numbers of letters
+  for(
+        let iterator = 0; 
+        iterator < message.length; 
+        iterator++
+     )  {
+              for( let i = 0; i < alphabet.length; i++){
+                  if (message[iterator] == alphabet[i]) {
+                      messageNumbers.push(i);
+                  }
+              }
+
+              for( let o = 0; o < alphabet.length; o++){
+                  if (key[iterator] == alphabet[o]) {
+                    keyNumbers.push(o);
+                  }
+              }
+        }
+
+  // Generate crypto numbers from 
+  // message and key numbers by module
+  for(let i = 0; i < messageNumbers.length; i++) {
+
+    let number1 = messageNumbers[i];
+    let number2 = keyNumbers[i];
+
+
+    if ((number1 + number2) < module) {
+      crypted.push(number1 + number2);
+    } else {
+      crypted.push((number1 + number2) - module);
+    }
+
+  }
+
+  // generate crypto message;
+  for(let k = 0; k < crypted.length; k++) {
+      for(let m = 0; m < alphabet.length; m++) {
+          if( crypted[k] == m) {
+              cryptedMessage.push(alphabet[m]);
+          }
+      }
+  }
+  
+  return cryptedMessage;
+}
+</script>
+</body>
+</html>

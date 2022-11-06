@@ -1,0 +1,116 @@
+
+body{
+  background: #424242;
+  font-family: Segoe UI;
+  font-size: 16px;
+}
+.container{
+  background: #fff;
+  box-shadow:  0 0 5px rgba(0,0,0,.5);
+  margin: 30px auto;
+  max-width: 500px;
+}
+.message{
+  padding: 30px;
+  background: darkred;
+  color: #fff;
+  font-weight: 600;
+  display: none;
+}
+h1{
+  padding: 20px;
+  margin: 0;
+  text-align: center;
+  background: rgb(100,124,2);
+background: radial-gradient(circle, rgba(100,124,2,1) 0%, rgba(59,115,46,1) 100%);
+  color: #fff;
+  font-size: 1.65rem;
+  text-shadow: 0 2px 1px rgba(0,0,0,.3);
+}
+p{
+  padding: 20px 30px;
+  margin: 0;
+  color: #222;
+  background: rgba(0,0,0,.1);
+  margin-bottom: 20px;
+}
+#cryptMessageBtn, #encryptMessageBtn{
+  height: 40px;
+  padding: 0 15px;
+  font-weight: bold;
+  border: 1px solid;
+  color: #fff;
+  border-radius: 2px;
+  cursor: pointer;
+}
+#cryptMessageBtn{
+  background: #73BD45;
+  color: #0f2005;
+  border-color: #5b9636 #47752a #385e1f;
+}
+#encryptMessageBtn{
+  background: #d8ad36;
+  color: #2f2304;
+  border-color: #b7932e #907321 #584512;
+  margin-left: 15px;
+}
+#cryptMessageBtn:hover{
+  background: #80d04e;
+}
+#encryptMessageBtn:hover{
+  background: #ecbf3f;
+}
+.activity{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 30px 30px 30px;
+}
+ul{
+  font-size: 0.8rem;
+  margin-top: 0;
+}
+.wrapper{
+  padding: 20px 30px;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: orange;
+  background: rgb(100,124,2);
+background: linear-gradient(90deg, rgba(100,124,2,0.4822129535407913) 0%, rgba(9,121,28,0.664285782672444) 35%, rgba(0,121,101,0.5158263989189426) 100%);
+  display: none;
+}
+#messageInput{
+  flex: 1;
+  height: 30px;
+  padding: 0 15px;
+  border: 1px solid #7a7a7a;
+  border-radius: 2px;
+  border-right: none;
+}
+label{
+  margin-right: 10px;
+  font-size: 0.8rem;
+  flex-basis: 100%;
+  margin-bottom: 10px;
+}
+#sendMessage{
+  height: 32px;
+  padding: 0 15px;
+  border: 1px solid;
+  border-radius:2px;
+  background: #525a64;
+  border-color: #454b54 #323941 #191d23;
+  color: #dde7f3;
+  cursor: pointer;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(0,0,0,1);
+}
+#sendMessage:hover{
+  background: #646d79;
+}
+#result{
+  flex-basis: 100%;
+  display: none;
+}
